@@ -32,3 +32,8 @@ pub fn compute(counts: Vec<Int>) -> Float {
 
     result
 }
+
+pub fn fround(f: Float, num: u32) -> Float {
+    let m = 10i32.pow(num) as Float;
+    (f * m).round() / m
+}

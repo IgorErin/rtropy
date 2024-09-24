@@ -4,11 +4,6 @@ fn float_eq(fst: rtropy::Float, snd: rtropy::Float) -> bool {
     return (fst - snd).abs() < rtropy::Float::EPSILON;
 }
 
-fn round(f: rtropy::Float, num: u32) -> rtropy::Float {
-    let m = 10i32.pow(num) as rtropy::Float;
-    (f * m).round() / m
-}
-
 #[test]
 fn compute_test() {
     let data: Vec<(&str, rtropy::Float)> = vec![
@@ -32,7 +27,7 @@ fn compute_test() {
         let counts = rtropy::count(str.chars());
         let numbers = counts.iter().map(|i| i.1);
         let actual = rtropy::compute(numbers.collect());
-        let actual = round(actual, 4);
+        let actual = rtropy::fround(actual, 4);
 
         let expected = i.1;
 

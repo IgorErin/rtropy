@@ -22,6 +22,7 @@ fn main() {
     let res = rtropy::count(sfile.chars());
     let res = res.iter().map(|x| x.1);
     let res = rtropy::compute(res.collect());
+    let res = rtropy::fround(res, 4);
 
-    println!("result: {res}")
+    println!("entropy: {res}")
 }
