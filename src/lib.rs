@@ -1,26 +1,33 @@
 use std::collections::HashMap;
 
-type Int = i32;
-type Float = f64;
+pub type Int = i32;
+pub type Float = f64;
 
-pub fn count(str: String) -> (Int, Vec<Int>) {    
-    let mut count: Int = 0;
+pub fn count(chars: impl Iterator<Item = char>) -> Vec<(char, Int)> {
     let mut counts = HashMap::new();
 
-    for ch in str.chars() {
+    for ch in chars {
         *(counts.entry(ch).or_default()) += 1;
-        count += 1;
     }
 
-    (count, counts.values().cloned().collect())
+    counts.into_iter().collect()
 }
 
-pub fn compute<I: Iterator<Item=Int>>(nitems: Int, counts: I) -> Float {
-    let mut result = Default::default();
+pub fn compute(counts: Vec<Int>) -> Float {
+    let mut result: Float = Default::default();
+    let nall: Int = counts.iter().sum();
 
-    for c in counts {
-        let prob = (c as Float) / (nitems as Float);
-        result += prob * Float::log2(prob);
+    for count in counts {
+        // println!("count: {count}");
+        let prob = (count as Float) / (nall as Float);
+        // println!("prob: {prob}");
+
+        let log = Float::log2(prob);
+        // println!("log: {log}");
+
+        result -= prob * log;
+
+        // println!("result: {result}");
     }
 
     result
