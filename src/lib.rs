@@ -18,16 +18,8 @@ pub fn compute(counts: Vec<Int>) -> Float {
     let nall: Int = counts.iter().sum();
 
     for count in counts {
-        // println!("count: {count}");
         let prob = (count as Float) / (nall as Float);
-        // println!("prob: {prob}");
-
-        let log = Float::log2(prob);
-        // println!("log: {log}");
-
-        result -= prob * log;
-
-        // println!("result: {result}");
+        result -= prob * Float::log2(prob);
     }
 
     result
