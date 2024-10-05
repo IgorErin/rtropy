@@ -19,21 +19,25 @@ fn main() {
 
     type Int = i32;
     let (counts, nall) = {
-        let mut counts: HashMap<char, Int> = HashMap::new();
+        let mut counts: HashMap<u8, Int> = HashMap::new();
         let mut nall = 0;
+        let mut readed = 0;
 
-        let mut buf: Vec<u8> = Vec::<u8>::new();
-        while f.read_until(b'\n', &mut buf).expect("read_until failed") != 0 {
-            let s = String::from_utf8(buf).expect("from_utf8 failed");
+        loop {
+            f.consume(readed);
+            let bytes = f.fill_buf().expect("read failed");
+            readed = bytes.len();
 
-            for ch in s.chars() {
-                *(counts.entry(ch).or_default()) += 1;
-                nall += 1;
+            if readed == 0 {
+                break;
             }
 
-            buf = s.into_bytes();
-            buf.clear();
+            for ch in bytes {
+                *(counts.entry(*ch).or_default()) += 1;
+                nall += 1
+            }
         }
+
         (counts, nall)
     };
 
